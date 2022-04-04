@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LABORATOR6___EmguCV.Properties
+namespace EmguCV.Properties
 {
 
 
