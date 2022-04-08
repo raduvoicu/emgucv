@@ -197,8 +197,8 @@ namespace EmguCV
                 pictureBox5.Image = myImage.ToBitmap();
 
                 var angleToRotate = float.Parse(angle.Text);
-                myImage.Rotate(angleToRotate,new Bgr(Color.Gray),true);
-                pictureBox6.Image = myImage.ToBitmap();
+                var image = myImage.Rotate(angleToRotate,new Bgr(Color.Gray),true);
+                pictureBox6.Image = image.ToBitmap();
 
             }
         }
