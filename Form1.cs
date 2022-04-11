@@ -27,6 +27,7 @@ namespace EmguCV
             {
                 Image<Bgr, Byte> myImage = new Image<Bgr, byte>(openFile.FileName);
                 pictureBox1.Image = myImage.ToBitmap();
+
             }
         }
 
@@ -155,14 +156,14 @@ namespace EmguCV
                 var beta = int.Parse(textBox2.Text);
                 var result = myImage.Mul(alfa) + beta;
                 pictureBox2.Image = result.ToBitmap();
-                
+
                 var coeff = float.Parse(gammaCoefficient.Text);
                 myImage._GammaCorrect(coeff);
                 pictureBox4.Image = myImage.ToBitmap();
 
                 var resizeCoefficientValue = float.Parse(resizeCoefficient.Text);
                 myImage.Resize(resizeCoefficientValue, Emgu.CV.CvEnum.Inter.Cubic);
-                pictureBox5.Image= myImage.ToBitmap();
+                pictureBox5.Image = myImage.ToBitmap();
 
             }
         }
@@ -197,8 +198,69 @@ namespace EmguCV
                 pictureBox5.Image = myImage.ToBitmap();
 
                 var angleToRotate = float.Parse(angle.Text);
-                var image = myImage.Rotate(angleToRotate,new Bgr(Color.Gray),true);
+                var image = myImage.Rotate(angleToRotate, new Bgr(Color.Gray), true);
                 pictureBox6.Image = image.ToBitmap();
+
+            }
+        }
+
+        private Rectangle rect; Point StartROI;
+        private bool MouseDown;
+
+        private void pictureBox7_Paint(object sender, PaintEventArgs e)
+        {
+            if (MouseDown)
+            {
+                using (Pen pen = new Pen(Color.FromArgb(53, 104, 131), 1))
+                {
+                    e.Graphics.DrawRectangle(pen, rect);
+                }
+            }
+
+        }
+
+        private void pictureBox7_MouseDown(object sender, MouseEventArgs e)
+        {
+            MouseDown = true;
+            StartROI = e.Location;
+        }
+
+        private void pictureBox7_MouseUp(object sender, MouseEventArgs e)
+        {
+            MouseDown = false;
+            if (pictureBox7.Image == null || rect == Rectangle.Empty)
+            { return; }
+
+            var img = new Bitmap(pictureBox7.Image).ToImage<Bgr, byte>();
+            img.ROI = rect;
+            var imgROI = img.Copy();
+
+            pictureBox8.Image = imgROI.ToBitmap();
+        }
+
+        private void pictureBox7_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (pictureBox7.Image == null)
+            {
+                return;
+            }
+
+            int width = Math.Max(StartROI.X, e.X) - Math.Min(StartROI.X, e.X);
+            int height = Math.Max(StartROI.Y, e.Y) - Math.Min(StartROI.Y, e.Y);
+            rect = new Rectangle(Math.Min(StartROI.X, e.X),
+                Math.Min(StartROI.Y, e.Y),
+                width,
+                height);
+            Refresh();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() == DialogResult.OK)
+            {
+                Image<Bgr, Byte> myImage = new Image<Bgr, byte>(openFile.FileName);
+                pictureBox7.Image = myImage.ToBitmap();
 
             }
         }
