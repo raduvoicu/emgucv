@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.UI;
+using LABORATOR6___EmguCV;
 
 namespace EmguCV
 {
@@ -263,6 +266,75 @@ namespace EmguCV
                 pictureBox7.Image = myImage.ToBitmap();
 
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void videoForm_Click(object sender, EventArgs e)
+        {
+            Form2 video = new Form2();
+            video.Show();
+        }
+
+        private void pictureBox9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void blend_Click(object sender, EventArgs e)
+        {
+            string[] fileNames = Directory.GetFiles(@"C:\Users\radvo\OneDrive\Imagini\Capturi de ecran", "*.png");
+            List<Image<Bgr, byte>> listImages = new List<Image<Bgr, byte>>();
+            foreach (var file in fileNames)
+            {
+                listImages.Add(new Image<Bgr, byte>(file));
+            }
+
+            for (int i = 0; i < listImages.Count-2; i++)
+            {
+                for (double alpha = 0.0; alpha <=1.0; alpha+=0.01)
+                {
+                    pictureBox9.Image = listImages[i + 1].AddWeighted(listImages[i], alpha, 1 - alpha, 0).AsBitmap();
+                    await Task.Delay(5);
+                }
+            }
+        }
+
+        private void watermark_Click(object sender, EventArgs e)
+        {
+            VideoCapture capture = new VideoCapture(@"C:\Users\radvo\Pictures\Star Wars Reflections 4K Unreal Engine Real-Time Ray Tracing Demonstration (360).mp4");
+
+            int Fourcc = Convert.ToInt32(capture.Get(CapProp.FourCC));
+            int Width = Convert.ToInt32(capture.Get(CapProp.FrameWidth));
+            int Height = Convert.ToInt32(capture.Get(CapProp.FrameHeight));
+            var Fps = capture.Get(CapProp.Fps);
+            var TotalFrame = capture.Get(CapProp.FrameCount);
+
+
+            string destionpath = @"C:\Users\radvo\Pictures\watermark1.mp4";
+            using (VideoWriter writer = new VideoWriter(destionpath, Fourcc, Fps, new Size(Width, Height), true))
+            {
+                Image<Bgr, byte> logo = new Image<Bgr, byte>(@"C:\Users\radvo\Downloads\253497242_1440234176370432_1779573431902212064_n_10x10.jpg");
+                Mat m = new Mat();
+
+                var FrameNo = 1;
+                while (FrameNo < TotalFrame)
+                {
+                    capture.Read(m);
+                    Image<Bgr, byte> img = m.ToImage<Bgr, byte>();
+                    img.ROI = new Rectangle(Width - logo.Width - 30, 10, logo.Width, logo.Height);
+                    if (logo != null) logo.CopyTo(img);
+
+                    img.ROI = Rectangle.Empty;
+
+                    writer.Write(img.Mat);
+                    FrameNo++;
+                }
+            }
+
         }
     }
 }
