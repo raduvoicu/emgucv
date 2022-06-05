@@ -1,6 +1,6 @@
 ﻿namespace LABORATOR6___EmguCV
 {
-    partial class Form2
+    partial class Video
     {
         /// <summary>
         /// Required designer variable.
@@ -32,6 +32,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.autoVideoLoad = new System.Windows.Forms.Button();
+            this.abruptMerge = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,7 +44,7 @@
             this.videoLoad.TabIndex = 0;
             this.videoLoad.Text = "Load Video";
             this.videoLoad.UseVisualStyleBackColor = true;
-            this.videoLoad.Click += new System.EventHandler(this.videoLoad_Click);
+            this.videoLoad.Click += new System.EventHandler(this.VideoLoad);
             // 
             // pictureBox1
             // 
@@ -72,17 +73,28 @@
             this.autoVideoLoad.UseVisualStyleBackColor = true;
             this.autoVideoLoad.Click += new System.EventHandler(this.autoVideoLoad_Click);
             // 
-            // Form2
+            // abruptMerge
+            // 
+            this.abruptMerge.Location = new System.Drawing.Point(16, 68);
+            this.abruptMerge.Name = "abruptMerge";
+            this.abruptMerge.Size = new System.Drawing.Size(91, 23);
+            this.abruptMerge.TabIndex = 4;
+            this.abruptMerge.Text = "Merge abrupt";
+            this.abruptMerge.UseVisualStyleBackColor = true;
+            this.abruptMerge.Click += new System.EventHandler(this.AbruptMerge);
+            // 
+            // Video
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1794, 885);
+            this.Controls.Add(this.abruptMerge);
             this.Controls.Add(this.autoVideoLoad);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.videoLoad);
-            this.Name = "Form2";
-            this.Text = "Form2";
+            this.Name = "Video";
+            this.Text = "Video";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -95,5 +107,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button autoVideoLoad;
+        private System.Windows.Forms.Button abruptMerge;
     }
 }
